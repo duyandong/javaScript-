@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>轮播</title>
+    <script src="./js/animate.js"></script>
+    <style>
+        .window{
+            width: 740px;
+            height: 350px;
+            border: 3px solid cornflowerblue;
+            margin: 50px auto;
+            position: relative;
+            overflow: hidden;
+        }
+        .window a{
+            display: block;
+            font-size: 0;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        img{
+            border: none;
+        }
+        ul{
+            width: 100px;
+            height: 10px;
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            margin-left: -50px;
+            list-style: none;
+            z-index: 9999;
+        }
+        li{
+            width: 10px;
+            height: 10px;
+            background: #ccc;
+            border-radius: 50%;
+            list-style: none;
+            float: left;
+            margin-right: 10px;
+            /*cursor: ;*/
+        }
+        .hot{
+            background: red;
+        }
+        .btnL{
+            width: 40px;
+            background:url("./image/123.png") ;
+            cursor: pointer;
+            height: 70px;
+            position: absolute;
+            left: 0;
+            top:140px;
+            opacity: 0.5;
+        }
+        .btnR{
+            width: 40px;
+            background:url("./image/123.png")no-repeat right 0 ;
+            cursor: pointer;
+            height: 70px;
+            position: absolute;
+            right: 0;
+            top:140px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+<div class="window">
+    <a href="#">
+        <img src="image/b-1.jpg" alt="" />
+    </a>
+    <a href="#">
+        <img src="image/b-2.jpg" alt="" />
+    </a>
+    <a href="#">
+        <img src="image/b-3.jpg" alt=""/>
+    </a>
+    <a href="#">
+        <img src="image/b-4.jpg" alt=""/>
+    </a>
+    <a href="#">
+        <img src="image/b-5.jpg" alt=""/>
+    </a>
+
+    <ul>
+        <li class="hot"></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <div class="btnL"></div>
+    <div class="btnR"></div>
+
+</div>
+
+</body>
+<script>
+    window.onload=function(){
+        var win=document.getElementsByClassName("window")[0];
+        var imgs=document.getElementsByTagName("a",win);
+        var lis=document.getElementsByTagName("li",win);
+        var btnL=document.getElementsByClassName("btnL")[0];
+        var btnR=document.getElementsByClassName("btnR")[0];
+
+        var t;
+        var num=0;
+        var flag=true;
+        t=setInterval(moveR,1500);
+
+        //鼠标移上停止，移走继续自动轮播
+        win.onmouseover=function(){
+            clearInterval(t);
+        }
+        win.onmouseout=function(){
+            clearInterval(t);
+            t=setInterval(moveR,1500);
+        }
+
+        //圆点按钮
+        for(var i=0;i<lis.length;i++){
+            lis[i].index=i;
+            lis[i].onclick=function(){
+                num=this.index;
+                for(var j=0;j<imgs.length;j++){
+                    animate(imgs[j],{opacity:0});
+                    lis[j].style.background="#ccc"
+                }
+                animate(imgs[this.index],{opacity:1});
+                lis[this.index].style.background="red";
+            }
+        }
+
+
+
+
+        //左右按钮
+        btnR.onclick=function(){
+            moveR();
+        }
+        btnL.onclick=function(){
+            moveL();
+        }
+
+        function moveL(){
+            num--;
+            if(num<0){
+                num=imgs.length-1;
+            }
+            for(var i=0;i<imgs.length;i++){
+                animate(imgs[i],{opacity:0});
+                lis[i].style.background="#ccc"
+            }
+            animate(imgs[num],{opacity:1});
+            lis[num].style.background="red";
+        }
+
+        //自动轮播
+        function moveR(){
+            num++;
+            if(num==imgs.length){
+                num=0;
+            }
+            for(var i=0;i<imgs.length;i++){
+                animate(imgs[i],{opacity:0});
+                lis[i].style.background="#ccc"
+            }
+            animate(imgs[num],{opacity:1});
+            lis[num].style.background="red";
+
+        }
+    }
+
+
+
+</script>
+</html>
